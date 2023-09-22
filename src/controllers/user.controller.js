@@ -33,12 +33,10 @@ router.post("/login", async (req, res) => {
     if(!user) {
       return res.status(401).send("user doesn't exists");
     }
-
     const isPasswordMatched = await bcrypt.compare(password, user.password);
     if(!isPasswordMatched) {
       return res.status(401).send("wrong password!");
     }
-
     const SECRET_KEY = process.env.SECRET_KEY;
     const accessToken = jwt.sign({_id: user._id.toString(), email: user.email, name: user.name}, SECRET_KEY);
     return res.status(201).send({accessToken});
